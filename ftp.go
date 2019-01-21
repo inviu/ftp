@@ -188,10 +188,10 @@ func (c *ServerConn) setUTF8() error {
 		return err
 	}
 
-        // Workaround for FTP servers, that does not support this option.
-        if code == StatusBadArguments {
-                return nil
-        }
+	// Workaround for FTP servers, that does not support this option.
+	if code == StatusBadArguments {
+		return nil
+	}
 
 	// The ftpd "filezilla-server" has FEAT support for UTF8, but always returns
 	// "202 UTF8 mode is always enabled. No need to send this command." when
@@ -264,7 +264,9 @@ func (c *ServerConn) pasv() (host string, port int, err error) {
 	port = portPart1*256 + portPart2
 
 	// Make the IP address to connect to
-	host = strings.Join(pasvData[0:4], ".")
+	// host = strings.Join(pasvData[0:4], ".")
+	// modify by joee33: use ftp-server host for pasv, jx-vrmax return a local host
+	host = c.host
 	return
 }
 
